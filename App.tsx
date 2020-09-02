@@ -1,31 +1,28 @@
 import React from 'react';
 import Home from './screens/Home';
+import NewGame from './screens/NewGame';
 import { AppLoading } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import Text from './components/Text';
 import { useFonts, Quando_400Regular } from '@expo-google-fonts/quando';
 
-const CustomText = (props) => <Text style={{ fontFamily: 'Quando_400Regular' }}>{props.children}</Text>
+const headerOptions = {
+  headerTitleStyle: {
+    fontFamily: 'Quando_400Regular'
+  },
+  headerStyle: {
+    backgroundColor: 'lightblue'
+  }
+}
+
 function DetailsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <CustomText>Details!</CustomText>
-    </View>
-  );
-}
-
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <CustomText>Home screen</CustomText>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Details')}
-      >
-        <CustomText>Go to Details</CustomText>
-      </TouchableOpacity>
+      <Text>Details!</Text>
     </View>
   );
 }
@@ -33,77 +30,61 @@ function HomeScreen({ navigation }) {
 function SettingsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <CustomText>Settings screen</CustomText>
+      <Text>Settings screen</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Details')}
+        onPress={() => navigation.navigate('New Game')}
       >
-        <CustomText>Go to Details</CustomText>
+        <Text>Go to Details</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-const HomeStack = createStackNavigator(); function HomeStackScreen() {
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen 
-        name="Home" 
-        component={HomeScreen}
+      <HomeStack.Screen
+        name="Home"
+        component={Home}
         options={{
-          title: 'Home',
-          headerTitleStyle: {
-            fontFamily: 'Quando_400Regular'
-          },
-          headerStyle: {
-            backgroundColor: 'lightblue'
-          }
-        }} 
+          ...headerOptions,
+          title: 'Home'
+        }}
       />
-      <HomeStack.Screen 
-        name="Details" 
-        component={DetailsScreen}
+      <HomeStack.Screen
+        name="New Game"
+        component={NewGame}
         options={{
-          title: 'Home',
-          headerTitleStyle: {
-            fontFamily: 'Quando_400Regular'
-          },
-          headerStyle: {
-            backgroundColor: 'lightblue'
-          }
-        }} 
+          ...headerOptions,
+          title: 'New Game'
+        }}
       />
     </HomeStack.Navigator>
   );
 }
 
-const SettingsStack = createStackNavigator(); function SettingsStackScreen() {
+const SettingsStack = createStackNavigator();
+
+function SettingsStackScreen() {
   return (
     <SettingsStack.Navigator>
-      <SettingsStack.Screen 
-        name="Settings" 
+      <SettingsStack.Screen
+        name="Settings"
         component={SettingsScreen}
         options={{
+          ...headerOptions,
           title: 'Home',
-          headerTitleStyle: {
-            fontFamily: 'Quando_400Regular'
-          },
-          headerStyle: {
-            backgroundColor: 'lightblue'
-          }
-        }} 
+        }}
       />
-      <SettingsStack.Screen 
-        name="Details" 
+      <SettingsStack.Screen
+        name="Details"
         component={DetailsScreen}
         options={{
+          ...headerOptions,
           title: 'Home',
-          headerTitleStyle: {
-            fontFamily: 'Quando_400Regular'
-          },
-          headerStyle: {
-            backgroundColor: 'lightblue'
-          }
-        }} 
+        }}
       />
     </SettingsStack.Navigator>
   );
@@ -137,37 +118,27 @@ export default function App() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-        })} tabBarOptions={{
-          activeTintColor: 'tomato',
+        })}
+        tabBar={(props) => {
+          return <BottomTabBar {...props} style={{ backgroundColor: 'lightblue' }} />
+        }}
+        tabBarOptions={{
+          activeTintColor: '#333333',
           inactiveTintColor: 'gray',
         }}>
-        <Tab.Screen 
-          name="Home" 
+        <Tab.Screen
+          name="Home"
           component={HomeStackScreen}
           options={{
-            title: 'Home',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontFamily: 'Quando_400Regular'
-            },
-            headerStyle: {
-              backgroundColor: 'lightblue'
-            }
-          }} 
+            title: 'Home'
+          }}
         />
-        <Tab.Screen 
-          name="Settings" 
+        <Tab.Screen
+          name="Settings"
           component={SettingsStackScreen}
           options={{
-            title: 'Home',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontFamily: 'Quando_400Regular'
-            },
-            headerStyle: {
-              backgroundColor: 'lightblue'
-            }
-          }} 
+            title: 'Settings'
+          }}
         />
       </Tab.Navigator>
     </NavigationContainer>
